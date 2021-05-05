@@ -1,0 +1,96 @@
+$resourceGroup = "myResourceGroup"
+$loadBalancerName = "myLoadBalancer"
+$backendPoolName = "myBackendPool"
+
+$backendPool = 
+New-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -BackendAddressPoolName $backendPoolName
+
+$resourceGroup = "myResourceGroup"
+$loadBalancerName = "myLoadBalancer"
+$backendPoolName = "myBackendPool"
+$nicname = "myNic"
+$location = "eastus"
+$vnetname = <your-vnet-name>
+
+$vnet = 
+Get-AzVirtualNetwork -Name $vnetname -ResourceGroupName $resourceGroup
+
+$nic = 
+New-AzNetworkInterface -ResourceGroupName $resourceGroup -Location $location -Name $nicname -LoadBalancerBackendAddressPool $backendPoolName -Subnet $vnet.Subnets[0]
+
+$resourceGroup = "myResourceGroup"
+$loadBalancerName = "myLoadBalancer"
+$backendPoolName = "myBackendPool"
+
+$lb =
+Get-AzLoadBalancer -ResourceGroupName $res
+Get-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -BackendAddressPoolName $backendPoolName
+
+# Create a username and password for the virtual machine
+$cred = Get-Credential
+
+# Create a virtual machine configuration
+$vmname = "myVM1"
+$vmsize = "Standard_DS1_v2"
+$pubname = "MicrosoftWindowsServer"
+$nicname = "myNic"
+$off = "WindowsServer"
+$sku = "2020-Datacenter"
+$resourceGroup = "myResourceGroup"
+$location = "eastus"
+
+$nic =
+Get-AzNetworkInterface -Name $nicname -ResourceGroupName $resourceGroup
+
+$vmConfig = 
+New-AzVMConfig -VMName $vmname -VMSize $vmsize | Set-AzVMOperatingSystem -Windows -ComputerName $vmname -Credential $cred | Set-AzVMSourceImage -PublisherName $pubname -Offer $off -Skus $sku -Version latest | Add-AzVMNetworkInterface -Id $nic.Id
+ 
+# Create a virtual machine using the configuration
+$vm1 = New-AzVM -ResourceGroupName $resourceGroup -Zone 1 -Location $location -VM $vmConfig
+
+====================================================================================================
+
+$resourceGroup = "myResourceGroup"
+$loadBalancerName = "myLoadBalancer"
+$backendPoolName = "myBackendPool"
+$vnetName = "myVnet"
+$location = "eastus"
+$nicName = "myNic"
+
+$backendPool = New-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -Name $backendPoolName
+
+$virtualNetwork = 
+Get-AzVirtualNetwork -Name $vnetName -ResourceGroupName $resourceGroup 
+ 
+$ip1 = New-AzLoadBalancerBackendAddressConfig -IpAddress "10.0.0.5" -Name "TestVNetRef" -VirtualNetwork $virtualNetwork  
+ 
+$backendPool.LoadBalancerBackendAddresses.Add($ip1) 
+
+Set-AzLoadBalancerBackendAddressPool -InputObject $backendPool
+
+Get-AzLoadBalancerBackendAddressPool -ResourceGroupName $resourceGroup -LoadBalancerName $loadBalancerName -Name $backendPoolName
+
+$nic = 
+New-AzNetworkInterface -ResourceGroupName $resourceGroup -Location $location -Name $nicName -PrivateIpAddress 10.0.0.4 -Subnet $virtualNetwork.Subnets[0]
+
+# Create a username and password for the virtual machine
+$cred = Get-Credential
+
+# Create a virtual machine configuration
+$vmname = "myVM1"
+$vmsize = "Standard_DS1_v2"
+$pubname = "MicrosoftWindowsServer"
+$nicname = "myNic"
+$off = "WindowsServer"
+$sku = "2020-Datacenter"
+$resourceGroup = "myResourceGroup"
+$location = "eastus"
+
+$nic =
+Get-AzNetworkInterface -Name $nicname -ResourceGroupName $resourceGroup
+
+$vmConfig = 
+New-AzVMConfig -VMName $vmname -VMSize $vmsize | Set-AzVMOperatingSystem -Windows -ComputerName $vmname -Credential $cred | Set-AzVMSourceImage -PublisherName $pubname -Offer $off -Skus $sku -Version latest | Add-AzVMNetworkInterface -Id $nic.Id
+
+# Create a virtual machine using the configuration
+$vm1 = New-AzVM -ResourceGroupName $resourceGroup -Zone 1 -Location $location -VM $vmConfig
