@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "TestAdmin"
+    },
+    "dnsNameForPublicIP": {
+      "value": "arm-vm-public-dns-123"
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/Azure-ARM-Template1/providers/Microsoft.KeyVault/vaults/TestKeyVault2021AMP1"
+        },
+        "secretName": "vmAdminPassword"
+      }
+    },
+    "securityGroupName": {
+      "value": "TestSecurityGroupName"
+    },
+    "keyVaultName": {
+      "value": "TestKeyVault2021AMP1"
+    },
+    "enabledForDeployment": {
+      "value": true
+    },
+    "enabledForDiskEncryption": {
+      "value": false
+    },
+    "enabledForTemplateDeployment": {
+      "value": true
+    },
+    "tenantId": {
+      "value": "b41b72d0-4e9f-4c26-8a69-f949f367c91d"
+    },
+    "objectId": {
+      "value": "b7883403-09b9-4901-b74d-370d56175ca4"
+    },
+    "keysPermissions": {
+      "value": [
+        "all"
+      ]
+    },
+    "secretsPermissions": {
+      "value": [
+        "all"
+      ]
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "secretName": {
+      "value": "SecretName1222dds"
+    },
+    "secretValue": {
+      "value": "SecretValueTest"
+    },
+    "location": {
+      "value": "eastus"
+    }
+  }
+}

@@ -1,0 +1,167 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "sqlServerPrimaryName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the primary SQL Server."
+        }
+      },
+      "sqlServerPrimaryAdminUsername": {
+        "type": "string",
+        "metadata": {
+          "description": "The administrator username of the primary SQL Server."
+        }
+      },
+      "sqlServerPrimaryAdminPassword": {
+        "type": "securestring",
+        "metadata": {
+          "description": "The administrator password of the primary SQL Server."
+        }
+      },
+      "sqlServerSecondaryName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the secondary SQL Server."
+        }
+      },
+      "sqlServerSecondaryRegion": {
+        "type": "string",
+        "metadata": {
+          "description": "The location of the secondary SQL Server."
+        }
+      },
+      "sqlServerSecondaryAdminUsername": {
+        "type": "string",
+        "metadata": {
+          "description": "The administrator username of the secondary SQL Server."
+        }
+      },
+      "sqlServerSecondaryAdminPassword": {
+        "type": "securestring",
+        "metadata": {
+          "description": "The administrator password of the secondary SQL Server."
+        }
+      },
+      "sqlFailoverGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the failover group."
+        }
+      },
+      "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]",
+        "metadata": {
+          "description": "Location for all resources."
+        }
+      },
+      "primaryElasticPoolName": {
+        "type": "string",
+        "metadata": {
+          "description": "The Elastic Pool name."
+        }
+      },
+      "secondaryElasticPoolName": {
+        "type": "string",
+        "metadata": {
+          "description": "The Elastic Pool name."
+        }
+      },
+      "edition": {
+        "type": "string",
+        "defaultValue": "Standard",
+        "allowedValues": [
+          "Basic",
+          "Standard",
+          "Premium",
+          "GP_Gen5",
+          "BC_Gen5"
+        ],
+        "metadata": {
+          "description": "The Elastic Pool edition."
+        }
+      },
+      "capacity": {
+        "type": "int",
+        "metadata": {
+          "description": "The Elastic Pool DTU or nomber of vcore."
+        }
+      },
+      "databaseCapacityMin": {
+        "type": "int",
+        "defaultValue": 0,
+        "metadata": {
+          "description": "The Elastic Pool database capacity min."
+        }
+      },
+      "databaseCapacityMax": {
+        "type": "int",
+        "metadata": {
+          "description": "The Elastic Pool database capacity max."
+        }
+      }
+    },
+    "resources": [
+      {
+        "name": "SqlServer",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2016-09-01",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "https://raw.githubusercontent.com/taRantitka/Azure-Powershell/master/6.SQLDatabase/linked/sql_server.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "sqlServerPrimaryName": {
+              "value": "[parameters('sqlServerPrimaryName')]"
+            },
+            "sqlServerPrimaryAdminUsername": {
+              "value": "[parameters('sqlServerPrimaryAdminUsername')]"
+            },
+            "sqlServerPrimaryAdminPassword": {
+              "value": "[parameters('sqlServerPrimaryAdminPassword')]"
+            },
+            "sqlServerSecondaryName": {
+              "value": "[parameters('sqlServerSecondaryName')]"
+            },
+            "sqlServerSecondaryRegion": {
+              "value": "[parameters('sqlServerSecondaryRegion')]"
+            },
+            "sqlServerSecondaryAdminUsername": {
+              "value": "[parameters('sqlServerSecondaryAdminUsername')]"
+            },
+            "sqlServerSecondaryAdminPassword": {
+              "value": "[parameters('sqlServerSecondaryAdminPassword')]"
+            },
+            "sqlFailoverGroupName": {
+              "value": "[parameters('sqlFailoverGroupName')]"
+            },
+            "location": {
+              "value": "[parameters('location')]"
+            },
+            "primaryElasticPoolName": {
+              "value": "[parameters('primaryElasticPoolName')]"
+            },
+            "secondaryElasticPoolName": {
+              "value": "[parameters('secondaryElasticPoolName')]"
+            },
+            "edition": {
+              "value": "[parameters('edition')]"
+            },
+            "capacity": {
+              "value": "[parameters('capacity')]"
+            },
+            "databaseCapacityMin": {
+              "value": "[parameters('databaseCapacityMin')]"
+            },
+            "databaseCapacityMax": {
+              "value": "[parameters('databaseCapacityMax')]"
+            }
+          }
+        }
+      }
+    ]
+  }

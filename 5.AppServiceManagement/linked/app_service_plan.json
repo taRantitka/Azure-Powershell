@@ -1,0 +1,59 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "hostingPlanName1": {
+      "type": "String"
+    },
+    "hostingPlanName2": {
+      "type": "string"
+    },
+    "location": {
+      "type": "String"
+    },
+    "sku": {
+      "type": "String"
+    },
+    "skuCode": {
+      "type": "String"
+    },
+    "workerSize": {
+      "type": "String"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-02-01",
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "Tier": "[parameters('sku')]",
+        "Name": "[parameters('skuCode')]"
+      },
+      "name": "[parameters('hostingPlanName1')]",
+      "location": "East US",
+      "properties": {
+        "name": "[parameters('hostingPlanName1')]",
+        "workerSizeId": "[parameters('workerSize')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "apiVersion": "2018-02-01",
+      "name": "[parameters('hostingPlanName2')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "Central US",
+      "sku": {
+        "Tier": "[parameters('sku')]",
+        "Name": "[parameters('skuCode')]"
+      },
+      "properties": {
+        "name": "[parameters('hostingPlanName2')]",
+        "numberOfWorkers": 1
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

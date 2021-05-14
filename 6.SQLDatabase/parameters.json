@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "sqlServerPrimaryName": {
+        "value": "temp123uniqueNameServerName1"
+      },
+      "sqlServerPrimaryAdminUsername": {
+        "value": "primaryadminname"
+      },
+      "sqlServerPrimaryAdminPassword": {
+        "reference": {
+          "keyVault": {
+            "id": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/Azure-ARM-Template1/providers/Microsoft.KeyVault/vaults/TestKeyVault2021AMP1"
+          },
+          "secretName": "sqlServerPrimaryAdminPassword"
+        }
+      },
+      "sqlServerSecondaryName": {
+        "value": "temp123uniqueNameServerName2"
+      },
+      "sqlServerSecondaryRegion": {
+        "value": "eastus"
+      },
+      "sqlServerSecondaryAdminUsername": {
+        "value": "secondaryadminname"
+      },
+      "sqlServerSecondaryAdminPassword": {
+        "reference": {
+          "keyVault": {
+            "id": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/Azure-ARM-Template1/providers/Microsoft.KeyVault/vaults/TestKeyVault2021AMP1"
+          },
+          "secretName": "sqlServerSecondaryAdminPassword"
+        }
+      },
+      "sqlFailoverGroupName": {
+        "value": "GEN-UNIQUE"
+      },
+      "primaryElasticPoolName": {
+        "value": "temp123uniqueNameElasticPool1"
+      },
+      "secondaryElasticPoolName": {
+        "value": "temp123uniqueNameElasticPool1"
+      },
+      "edition": {
+        "value": "Standard"
+      },
+      "capacity": {
+        "value": 100
+      },
+      "databaseCapacityMin": {
+        "value": 0
+      },
+      "databaseCapacityMax": {
+        "value": 100
+      }
+    }
+  }

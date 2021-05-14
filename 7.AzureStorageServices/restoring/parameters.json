@@ -1,0 +1,54 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "eastus"
+    },
+    "networkInterfaceName": {
+      "value": "restoredmachine779"
+    },
+    "subnetName": {
+      "value": "default"
+    },
+    "virtualNetworkId": {
+      "value": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/AzureResourceGroup2/providers/Microsoft.Network/virtualNetworks/myproject-vnet"
+    },
+    "publicIpAddressName": {
+      "value": "restoredMachine-ip"
+    },
+    "publicIpAddressType": {
+      "value": "Dynamic"
+    },
+    "publicIpAddressSku": {
+      "value": "Basic"
+    },
+    "virtualMachineName": {
+      "value": "restoredMachine"
+    },
+    "virtualMachineComputerName": {
+      "value": "restoredMachine"
+    },
+    "virtualMachineRG": {
+      "value": "AzureResourceGroup2"
+    },
+    "virtualMachineSize": {
+      "value": "Standard_B1ms"
+    },
+    "autoShutdownStatus": {
+      "value": "Enabled"
+    },
+    "autoShutdownTime": {
+      "value": "19:00"
+    },
+    "autoShutdownTimeZone": {
+      "value": "UTC"
+    },
+    "autoShutdownNotificationStatus": {
+      "value": "Disabled"
+    },
+    "autoShutdownNotificationLocale": {
+      "value": "en"
+    }
+  }
+}

@@ -1,0 +1,159 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dnsNameForPublicIP": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Globally unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "securityGroupName": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "SecurityGroupName"
+      }
+    }
+  },
+  "variables": {
+    "addressPrefix": "10.0.0.0/16",
+    "subnetName1": "FrontendSubnet",
+    "subnetName2": "BackendSubnet",
+    "subnetPrefix1": "10.0.0.0/24",
+    "subnetPrefix2": "10.0.1.0/24",
+    "subnetRef1": "[concat(variables('vnetId'), '/subnets/', variables('subnetName1'))]",
+    "subnetRef2": "[concat(variables('vnetId'), '/subnets/', variables('subnetName2'))]",
+    "publicIPAddressName": "myPublicIP",
+    "publicIPAddressType": "Dynamic",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "virtualNetworkName": "MyVNET",
+    "nicName": "myVMNic"
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('securityGroupName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "NSG - Front End"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "rdp-rule",
+            "properties": {
+              "description": "Allow RDP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "web-rule",
+            "properties": {
+              "description": "Allow WEB",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+      {
+        "apiVersion": "2016-03-30",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('publicIPAddressName')]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "displayName": "PublicIPAddress"
+        },
+        "properties": {
+          "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+          "dnsSettings": {
+            "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+          }
+        }
+      },
+      {
+        "apiVersion": "2016-03-30",
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[variables('virtualNetworkName')]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "displayName": "VirtualNetwork"
+        },
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[variables('addressPrefix')]"
+            ]
+          },
+          "subnets": [
+            {
+              "name": "[variables('subnetName1')]",
+              "properties": {
+                "addressPrefix": "[variables('subnetPrefix1')]",
+                "networkSecurityGroup": {
+                  "id": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/AzureResourceGroup6/providers/Microsoft.Network/networkSecurityGroups/TestSecurityGroupName"
+                }
+              }
+            },
+            {
+              "name": "[variables('subnetName2')]",
+              "properties": {
+                "addressPrefix": "[variables('subnetPrefix2')]",
+                "networkSecurityGroup": {
+                  "id": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/AzureResourceGroup6/providers/Microsoft.Network/networkSecurityGroups/TestSecurityGroupName"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "apiVersion": "2016-03-30",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('nicName')]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "displayName": "NetworkInterface"
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+          "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIPAddress": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+                },
+                "subnet": {
+                  "id": "[variables('subnetRef1')]"
+                }
+              }
+            }
+          ]
+        }
+      }
+  ],
+  "outputs": {
+  }
+}

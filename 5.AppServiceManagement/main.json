@@ -1,0 +1,128 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName1": {
+      "type": "String"
+    },
+    "appName2": {
+      "type": "String"
+    },
+    "hostingPlanName1": {
+      "type": "String"
+    },
+    "hostingPlanName2": {
+      "type": "string"
+    },
+    "location": {
+      "type": "String"
+    },
+    "sku": {
+      "type": "String"
+    },
+    "skuCode": {
+      "type": "String"
+    },
+    "workerSize": {
+      "type": "String"
+    },
+    "serverFarmResourceGroup": {
+      "type": "String"
+    },
+    "subscriptionId": {
+      "type": "String"
+    },
+    "_artifactsLocation": {
+      "type": "string"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring"
+    },
+    "uniqueDnsName": {
+      "type": "string",
+      "metadata": {
+        "description": "Relative DNS name for the traffic manager profile, must be globally unique."
+      }
+    }
+  },
+  "resources": [
+    //{
+    //  "name": "AppServicePlan",
+    //  "type": "Microsoft.Resources/deployments",
+    //  "apiVersion": "2016-09-01",
+    //  "properties": {
+    //    "mode": "Incremental",
+    //    "templateLink": {
+    //      "uri": "https://raw.githubusercontent.com/taRantitka/Azure-Powershell/master/5.AppServiceManagement/linked/app_service_plan.json",
+    //      "contentVersion": "1.0.0.0"
+    //    },
+    //    "parameters": {
+    //      "hostingPlanName1": {
+    //        "value": "[parameters('hostingPlanName1')]"
+    //      },
+    //      "hostingPlanName2": {
+    //        "value": "[parameters('hostingPlanName2')]"
+    //      },
+    //      "location": {
+    //        "value": "[parameters('location')]"
+    //      },
+    //      "sku": {
+    //        "value": "[parameters('sku')]"
+    //      },
+    //      "skuCode": {
+    //        "value": "[parameters('skuCode')]"
+    //      },
+    //      "workerSize": {
+    //        "value": "[parameters('workerSize')]"
+    //      }
+    //    }
+    //  }
+    //}
+    //{
+    //  "name": "AppService",
+    //  "type": "Microsoft.Resources/deployments",
+    //  "apiVersion": "2016-09-01",
+    //  "properties": {
+    //    "mode": "Incremental",
+    //    "templateLink": {
+    //      "uri": "https://raw.githubusercontent.com/taRantitka/Azure-Powershell/master/5.AppServiceManagement/linked/app_service.json",
+    //      "contentVersion": "1.0.0.0"
+    //    },
+    //    "parameters": {
+    //      "hostingPlanName1": {
+    //        "value": "[parameters('hostingPlanName1')]"
+    //      },
+    //      "hostingPlanName2": {
+    //        "value": "[parameters('hostingPlanName2')]"
+    //      },
+    //      "location": {
+    //        "value": "[parameters('location')]"
+    //      },
+    //      "appName1": {
+    //        "value": "[parameters('appName1')]"
+    //      },
+    //      "appName2": {
+    //        "value": "[parameters('appName2')]"
+    //      }
+    //    }
+    //  }
+    //}
+    {
+      "name": "TrafficManager",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-09-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/taRantitka/Azure-Powershell/master/5.AppServiceManagement/linked/traffic_manager.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "uniqueDnsName": {
+            "value": "[parameters('uniqueDnsName')]"
+          }
+        }
+      }
+    }
+  ]
+}

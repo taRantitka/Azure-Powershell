@@ -1,0 +1,89 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "acrName": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 50,
+            "metadata": {
+                    "description": "Name of your Azure Container Registry"
+                }
+        },
+        "acrAdminUserEnabled": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Enable admin user that have push / pull permission to the registry."
+            }
+        },
+        "aksClusterName": {
+            "type": "string",
+            "defaultValue": "aks101cluster-vmss",
+            "metadata": {
+                "description": "The name of the Managed Cluster resource."
+            }
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "string",
+            "metadata": {
+                "description": "The location of AKS resource."
+            }
+        },
+        "dnsPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Optional DNS prefix to use with hosted Kubernetes API server FQDN."
+            }
+        }
+    },
+    "resources": [
+      {
+        "name": "ARC",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2016-09-01",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "https://raw.githubusercontent.com/taRantitka/Azure-Powershell/master/8.ContainersInAzure/arm/linked/arc.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "acrName": {
+              "value": "[parameters('acrName')]"
+            },
+            "acrAdminUserEnabled": {
+              "value": "[parameters('acrAdminUserEnabled')]"
+            },
+            "location": {
+              "value": "[parameters('location')]"
+            }
+          }
+        }
+      },
+        {
+        "name": "ASK",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2016-09-01",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "https://raw.githubusercontent.com/taRantitka/Azure-Powershell/master/8.ContainersInAzure/arm/linked/ask.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "aksClusterName": {
+              "value": "[parameters('aksClusterName')]"
+            },
+            "dnsPrefix": {
+              "value": "[parameters('dnsPrefix')]"
+            },
+            "location": {
+              "value": "[parameters('location')]"
+            }
+          }
+        }
+      }
+    ]
+  }

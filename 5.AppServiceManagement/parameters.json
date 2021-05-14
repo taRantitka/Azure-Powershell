@@ -1,0 +1,33 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName1": {
+      "value": "AppService111test5"
+    },
+    "appName2": {
+      "value": "AppService222test5"
+    },
+    "hostingPlanName1": {
+      "value": "PlanName1"
+    },
+    "hostingPlanName2": {
+      "value": "PlanName2"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "skuCode": {
+      "value": "S1"
+    },
+    "workerSize": {
+      "value": "1"
+    },
+    "uniqueDnsName": {
+      "value": "app-services-with-traffic-manager-5"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName1": {
+      "type": "String"
+    },
+    "appName2": {
+      "type": "String"
+    },
+    "hostingPlanName1": {
+      "type": "String"
+    },
+    "hostingPlanName2": {
+      "type": "string"
+    },
+    "location": {
+      "type": "String"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-02-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[parameters('appName1')]",
+      "location": "East US",
+      "properties": {
+        "name": "[parameters('appName1')]",
+        "serverFarmId": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/azureresourcegroup10/providers/Microsoft.Web/serverfarms/PlanName1"
+      }
+    },
+    {
+      "apiVersion": "2018-02-01",
+      "name": "[parameters('appName2')]",
+      "type": "Microsoft.Web/sites",
+      "location": "Central US",
+      "properties": {
+        "name": "[parameters('appName2')]",
+        "serverFarmId": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/azureresourcegroup10/providers/Microsoft.Web/serverfarms/PlanName2"
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

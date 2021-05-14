@@ -1,0 +1,67 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "uniqueDnsName": {
+      "type": "string",
+      "metadata": {
+        "description": "Relative DNS name for the traffic manager profile, must be globally unique."
+      }
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Network/trafficManagerProfiles",
+      "name": "ExternalEndpointExample",
+      "location": "global",
+      "properties": {
+        "profileStatus": "Enabled",
+        "trafficRoutingMethod": "Performance",
+        "dnsConfig": {
+          "relativeName": "[parameters('uniqueDnsName')]",
+          "ttl": 30
+        },
+        "monitorConfig": {
+          "protocol": "HTTPS",
+          "port": 443,
+          "path": "/",
+          "expectedStatusCodeRanges": [
+            {
+              "min": 200,
+              "max": 202
+            },
+            {
+              "min": 301,
+              "max": 302
+            }
+          ]
+        },
+        "endpoints": [
+          {
+            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+            "name": "endpoint1",
+            "properties": {
+              "targetResourceId": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/AzureResourceGroup10/providers/Microsoft.Web/sites/AppService111test5",
+              "endpointStatus": "Enabled",
+              "endpointLocation": "eastus"
+            }
+          },
+          {
+            "type": "Microsoft.Network/TrafficManagerProfiles/azureEndpoints",
+            "name": "endpoint2",
+            "properties": {
+              "targetResourceId": "/subscriptions/6f4591cc-a4c3-4b71-9029-e27c972f7506/resourceGroups/azureresourcegroup10/providers/Microsoft.Web/sites/AppService222test5",
+              "endpointStatus": "Enabled",
+              "endpointLocation": "centralus"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
